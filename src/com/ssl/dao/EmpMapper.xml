@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.ssl.dao.EmpMapper">
+  	<select id="selectEmp" parameterType="emp" resultType="emp" >
+  	select eid,ename,sex,age,DATE_FORMAT(ruzhidate,'%Y-%m-%d')ruzhidate,sale from employee
+  	<where>
+ 			<if test="eid!='' and eid != null">
+ 				and sid=#{sid}
+ 			</if>
+ 			<if test="ename !='' and ename != null">
+ 				and ename like "%"#{ename}"%"
+ 			</if>
+ 			<if test="sex !='' and sex != null">
+ 				and sex=#{sex}
+ 			</if>
+ 			<if test="startTime!=null and startTime!=''">
+				and ruzhidate &gt;=#{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				and ruzhidate &lt;=#{endTime}
+			</if>
+ 		</where>
+  		limit #{page},#{pageSize}
+  	</select>
+  	<select id="selectEmpCount" parameterType="emp" resultType="int" >
+ 		select count(eid)  from employee
+ 		<where>
+ 			<if test="eid!='' and eid != null">
+ 				and eid=#{eid}
+ 			</if>
+ 			<if test="ename !='' and ename != null">
+ 				and ename like "%"#{ename}"%"
+ 			</if>
+ 			<if test="sex !='' and sex != null">
+ 				and sex=#{sex}
+ 			</if>
+ 			<if test="startTime!=null and startTime!=''">
+				and ruzhidate &gt;=#{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				and ruzhidate &lt;=#{endTime}
+			</if>
+ 		</where>
+ 	</select>
+ 	<update id="updateEmp" parameterType="emp">
+ 	update employee
+ 		<set>
+ 			<if test="ename !='' and ename != null">
+ 				 ename =#{ename},
+ 			</if>
+ 			<if test="sex !='' and sex != null">
+ 				sex=#{sex},
+ 			</if>
+ 			<if test="age !='' and age != null">
+ 				 age =#{age},
+ 			</if>
+ 			<if test="sale !='' and sale != null">
+ 				sale=#{sale},
+ 			</if>
+ 		</set>
+ 		<where>
+ 			eid=#{eid}
+ 		</where> 
+ 	</update>
+ 	<delete id="delEmp" parameterType="int">
+ 		delete from employee where eid=#{eid}
+ 	</delete>
+ 	<insert id="addEmp" parameterType="emp">
+ 		insert into employee (ename,sex,age,ruzhidate,sale) values(#{ename},#{sex},#{age},#{ruzhidate},#{sale}) 
+ 		
+ 	</insert>
+  </mapper>
